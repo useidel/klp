@@ -15,5 +15,6 @@ The kernel configuration must have the following options set
 
  CONFIG_SAMPLE_LIVEPATCH=m
 
-
+You may want to check out this youtube video too ..
+ http://youtu.be/oTaCleFlXKo
 
