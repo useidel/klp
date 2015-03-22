@@ -1,0 +1,53 @@
+#
+# To be added
+# 1. Assumptions/definitions if the kernel was compiled on the system
+# 2. Additional tasks/commands if the kernel was compiled on a 
+#    different system
+$
+$ cd </path/to/your/kernel/source>  # here /usr/src/kernels/linux-4.0-rc4
+$ cd samples
+$ grep udo livepatch/Makefile 
+obj-$(CONFIG_SAMPLE_LIVEPATCH) += livepatch-udo.o
+$
+$ ls livepatch/livepatch-udo.c 
+livepatch/livepatch-udo.c
+$
+$ make -C ../ M=`pwd` modules
+make: Entering directory '/usr/src/kernels/linux-4.0-rc4'
+  CC [M]  /usr/src/kernels/linux-4.0-rc4/samples/livepatch/livepatch-udo.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      /usr/src/kernels/linux-4.0-rc4/samples/livepatch/livepatch-udo.mod.o
+  LD [M]  /usr/src/kernels/linux-4.0-rc4/samples/livepatch/livepatch-udo.ko
+make: Leaving directory '/usr/src/kernels/linux-4.0-rc4'
+$
+#
+# Checking the function before live patching
+$
+$ cat /proc/uptime 
+3723.44 6820.30
+$
+# Now loading the live patch 
+$
+$ insmod livepatch-udo.ko
+$
+# Checking the function after live patching
+#
+$
+$ cat /proc/uptime 
+Happy Linux Kernel Live Patching!!
+$
+# Disableing via sysfs()
+$
+$ echo 0 > /sys/kernel/livepatch/livepatch_udo/enabled 
+$
+$ cat /proc/uptime 
+3743.85 6860.96
+$
+# And re-enabling it again
+$
+$ echo 1 > /sys/kernel/livepatch/livepatch_udo/enabled  
+$
+$ cat /proc/uptime 
+Happy Linux Kernel Live Patching!!
+$
